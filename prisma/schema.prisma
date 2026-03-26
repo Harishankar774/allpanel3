@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  phone        String   @unique
+  password     String
+  role         String   @default("USER")
+  balance      Float    @default(1000.0)
+  exposure     Float    @default(0.0)
+  referralCode String   @unique @default(cuid())
+  referredBy   String?
+  isActive   Boolean  @default(true)
+  isAdmin    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  bets         Bet[]
+  transactions Transaction[]
+}
+
+model Bet {
+  id        String   @id @default(cuid())
+  userId    String
+  matchId   String
+  team      String
+  betType   String
+  amount    Float
+  odds      Float
+  potential Float
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  match     Match    @relation(fields: [matchId], references: [id])
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  amount    Float
+  status    String   @default("PENDING")
+  method    String?
+  reference String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  sport     String
+  name      String
+  teamA     String
+  teamB     String
+  oddsA     Float?
+  oddsALay  Float?
+  oddsB     Float?
+  oddsBLay  Float?
+  oddsDraw  Float?
+  isLive    Boolean  @default(false)
+  isLocked  Boolean  @default(false)
+  status    String   @default("UPCOMING")
+  startTime DateTime
+  createdAt DateTime @default(now())
+
+  bets      Bet[]
+}

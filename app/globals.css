@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+.odds-btn {
+  min-width: 48px;
+  padding: 4px 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+
+.odds-btn:hover { opacity: 0.85; transform: scale(1.05); }
+.odds-btn.selected { outline: 2px solid #1d4ed8; outline-offset: 1px; }
+.odds-pink { background: #ffcdd2; color: #7f1d1d; }
+.odds-blue { background: #bbdefb; color: #1e3a5f; }
+.odds-locked { background: #f3f4f6; color: #9ca3af; cursor: not-allowed; }
+
+.sidebar-section-header {
+  background: #1565c0;
+  color: white;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sidebar-item {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar-item:hover { background: #eff6ff; color: #1d4ed8; }
+.sidebar-item.active { background: #dbeafe; color: #1d4ed8; font-weight: 600; }
+
+.sport-tab {
+  padding: 10px 16px;
+  font-size: 13px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  color: #6b7280;
+  background: white;
+  border: none;
+  transition: all 0.15s;
+}
+
+.sport-tab:hover { color: #1d4ed8; border-bottom-color: #93c5fd; }
+.sport-tab.active { color: #1d4ed8; border-bottom: 2px solid #1d4ed8; font-weight: 600; }
+
+.match-row {
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.1s;
+}
+
+.match-row:hover { background: #eff6ff; }
+.match-row:nth-child(even) { background: #f9fafb; }
+.match-row:nth-child(even):hover { background: #eff6ff; }
+
+.live-dot {
+  width: 8px; height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.bet-slip {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 280px;
+  background: white;
+  border: 2px solid #1d4ed8;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
