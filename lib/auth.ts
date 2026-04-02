@@ -21,26 +21,28 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user.isActive) return null;
         const valid = await bcrypt.compare(credentials.password, user.password);
         if (!valid) return null;
-        return { id: user.id, name: user.name, email: user.email, role: user.role };
+        return { id: user.id, name: user.name, email: user.email, role: user.role, isAdmin: user.isAdmin };
       },
     }),
   ],
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = (user as any).role;
-      }
-      return token;
-    },
+  if (user) {
+    token.id = user.id;
+    token.role = (user as any).role;
+    token.isAdmin = (user as any).isAdmin;
+  }
+  return token;
+},
     async session({ session, token }) {
-      if (session.user) {
-        (session.user as any).id = token.id;
-        (session.user as any).role = token.role;
-      }
-      return session;
-    },
+  if (session.user) {
+    (session.user as any).id = token.id;
+    (session.user as any).role = token.role;
+    (session.user as any).isAdmin = token.isAdmin;
+  }
+  return session;
+},
   },
   pages: { signIn: "/login" },
   secret: process.env.NEXTAUTH_SECRET,
