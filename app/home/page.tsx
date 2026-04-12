@@ -52,7 +52,7 @@ function Header({ balance, exposure, onLoginClick }: { balance: number; exposure
 }
 
 // ---- TOP NAV ----
-const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","🚀 CRASH","WEATHER"];
+const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","CRASH","WEATHER"]
 
 function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
   return (
@@ -65,7 +65,7 @@ function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) =>
     {item}
   </Link>
 ) :
-     item === "🚀 CRASH" ? (
+     item === " CRASH" ? (
   <Link href="/crash" key={item}
     style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: "transparent", color: "white", textDecoration: "none", display: "block" }}>
     {item}
@@ -259,27 +259,30 @@ function BetSlip({ bet, onClose, onStakeChange, onPlace, placing }: { bet: BetSl
 
 // ---- CASINO BANNER ----
 const casinoGames = [
-  { name: "MATKA", bg: "#7c2d12", em: "🎲" }, { name: "VIP TEENPATTI 1DAY", bg: "#1e3a8a", em: "♠" },
-  { name: "MOGAMBO", bg: "#7f1d1d", em: "👊" }, { name: "20-20 TEEN PATTI", bg: "#14532d", em: "♣" },
-  { name: "LUCKY 6", bg: "#7c2d00", em: "🍀" }, { name: "LIVE CASINO", bg: "#500724", em: "🎰" },
-  { name: "GOLDEN ROULETTE", bg: "#713f12", em: "⭕" }, { name: "POISON TEENPATTI", bg: "#1a2e05", em: "☠" },
-  { name: "SLOT GAMES", bg: "#0c4a6e", em: "🎮" }, { name: "BACCARAT LIVE", bg: "#312e81", em: "🃏" },
-];
+  { name:"MATKA", bg:"#7c2d12", em:"🎲", href:"/matka" },
+  { name:"VIP TEENPATTI 1DAY", bg:"#1e3a8a", em:"♠", href:"/teenpatti" },
+  { name:"MOGAMBO", bg:"#7f1d1d", em:"👊", href:"/teenpatti" },
+  { name:"20-20 TEEN PATTI", bg:"#14532d", em:"♣", href:"/teenpatti" },
+  { name:"LUCKY 6", bg:"#7c2d00", em:"🍀", href:"/lucky6" },
+  { name:"LIVE CASINO", bg:"#500724", em:"🎰", href:"/roulette" },
+  { name:"GOLDEN ROULETTE", bg:"#713f12", em:"⭕", href:"/roulette" },
+  { name:"POISON TEENPATTI", bg:"#1a2e05", em:"☠", href:"/teenpatti" },
+  { name:"SLOT GAMES", bg:"#0c4a6e", em:"🎮", href:"/matka" },
+  { name:"BACCARAT LIVE", bg:"#312e81", em:"🃏", href:"/teenpatti" },
+]
 
 function CasinoBanner() {
   return (
-    <div style={{ display: "flex", gap: 8, overflowX: "auto", padding: "10px 12px", background: "#f1f5f9", borderTop: "1px solid #e5e7eb", flexShrink: 0 }}>
+    <div style={{ display:"flex", gap:8, overflowX:"auto", padding:"10px 12px", background:"#f1f5f9", borderTop:"1px solid #e5e7eb", flexShrink:0 }}>
       {casinoGames.map((g, i) => (
-        <div key={i}
-          style={{ flexShrink: 0, width: 148, height: 88, borderRadius: 8, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, textAlign: "center", fontSize: 11, padding: 8, background: g.bg, transition: "transform 0.15s" }}
-          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.04)")}
-          onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
-          <div style={{ fontSize: 26, marginBottom: 4 }}>{g.em}</div>
-          <div style={{ lineHeight: 1.2 }}>{g.name}</div>
-        </div>
+        <Link key={i} href={g.href}
+          style={{ flexShrink:0, width:148, height:88, borderRadius:8, cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", color:"white", fontWeight:700, textAlign:"center", fontSize:11, padding:8, background:g.bg, textDecoration:"none" }}>
+          <div style={{ fontSize:26, marginBottom:4 }}>{g.em}</div>
+          <div style={{ lineHeight:1.2 }}>{g.name}</div>
+        </Link>
       ))}
     </div>
-  );
+  )
 }
 
 // ---- MAIN PAGE ----
