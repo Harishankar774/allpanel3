@@ -52,7 +52,7 @@ function Header({ balance, exposure, onLoginClick }: { balance: number; exposure
 }
 
 // ---- TOP NAV ----
-const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","🚀 CRASH","🌡️ WEATHER"];
+const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","🚀 CRASH","WEATHER"];
 
 function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
   return (
@@ -64,7 +64,7 @@ function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) =>
     {item}
   </Link>
 ) :
-  item === "🌡️ WEATHER" ? (
+  item === "WEATHER" ? (
     <Link href="/weather" key={item}
       style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: "transparent", color: "white", textDecoration: "none", display: "block" }}>
       {item}
@@ -383,3 +383,6 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+
