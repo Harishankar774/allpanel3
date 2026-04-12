@@ -24,6 +24,7 @@ model User {
 
   bets         Bet[]
   transactions Transaction[]
+  weatherBets WeatherBet[]
 }
 
 model Bet {
@@ -73,4 +74,18 @@ model Match {
   createdAt DateTime @default(now())
 
   bets      Bet[]
+}
+model WeatherBet {
+  id          String    @id @default(cuid())
+  userId      String
+  city        String
+  betType     String
+  prediction  String
+  amount      Float
+  status      String    @default("pending")
+  result      String?
+  actualValue Float?
+  createdAt   DateTime  @default(now())
+  settledAt   DateTime?
+  user        User      @relation(fields: [userId], references: [id])
 }
