@@ -58,6 +58,12 @@ function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) =>
   return (
     <nav style={{ background: "#283593", display: "flex", overflowX: "auto", flexShrink: 0 }}>
      {topNavItems.map(item => 
+     item === "🚀 CRASH" ? (
+  <Link href="/crash" key={item}
+    style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: "transparent", color: "white", textDecoration: "none", display: "block" }}>
+    {item}
+  </Link>
+) :
   item === "🌡️ WEATHER" ? (
     <Link href="/weather" key={item}
       style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: "transparent", color: "white", textDecoration: "none", display: "block" }}>
