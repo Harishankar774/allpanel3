@@ -4,16 +4,17 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   const bets = await prisma.bet.findMany({
     include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
-        }
-      }
+      user: { select: { name: true, email: true } }
     },
-    orderBy: {
-      createdAt: 'desc'
-    }
+    orderBy: { createdAt: 'desc' }
   })
-  return NextResponse.json(bets)
+
+  const weatherBets = await prisma.weatherBet.findMany({
+    include: {
+      user: { select: { name: true, email: true } }
+    },
+    orderBy: { createdAt: 'desc' }
+  })
+
+  return NextResponse.json({ bets, weatherBets })
 }

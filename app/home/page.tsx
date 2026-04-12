@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
+
 // ---- TYPES ----
 interface Match {
   id: string; sport: string; name: string;
@@ -51,17 +52,24 @@ function Header({ balance, exposure, onLoginClick }: { balance: number; exposure
 }
 
 // ---- TOP NAV ----
-const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","🚀 CRASH"];
+const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","🚀 CRASH","🌡️ WEATHER"];
 
 function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
   return (
     <nav style={{ background: "#283593", display: "flex", overflowX: "auto", flexShrink: 0 }}>
-      {topNavItems.map(item => (
-        <button key={item} onClick={() => onSelect(item)}
-          style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: active === item ? "#fff" : "transparent", color: active === item ? "#1a237e" : "white", transition: "all 0.15s" }}>
-          {item}
-        </button>
-      ))}
+     {topNavItems.map(item => 
+  item === "🌡️ WEATHER" ? (
+    <Link href="/weather" key={item}
+      style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: "transparent", color: "white", textDecoration: "none", display: "block" }}>
+      {item}
+    </Link>
+  ) : (
+    <button key={item} onClick={() => onSelect(item)}
+      style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: active === item ? "#fff" : "transparent", color: active === item ? "#1a237e" : "white", transition: "all 0.15s" }}>
+      {item}
+    </button>
+  )
+)}
     </nav>
   );
 }
