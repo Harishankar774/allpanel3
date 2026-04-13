@@ -52,7 +52,7 @@ function Header({ balance, exposure, onLoginClick }: { balance: number; exposure
 }
 
 // ---- TOP NAV ----
-const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7","CRASH","WEATHER"]
+const topNavItems = ["HOME","LOTTERY","CRICKET","TENNIS","FOOTBALL","TABLE TENNIS","BACCARAT","32 CARDS","TEENPATTI","POKER","LUCKY 7"," CRASH","WEATHER"]
 
 function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
   return (
@@ -273,16 +273,18 @@ const casinoGames = [
 
 function CasinoBanner() {
   return (
-    <div style={{ display:"flex", gap:8, overflowX:"auto", padding:"10px 12px", background:"#f1f5f9", borderTop:"1px solid #e5e7eb", flexShrink:0 }}>
+    <div style={{ display: "flex", gap: 8, overflowX: "auto", padding: "10px 12px", background: "#f1f5f9", borderTop: "1px solid #e5e7eb", flexShrink: 0 }}>
       {casinoGames.map((g, i) => (
-        <Link key={i} href={g.href}
-          style={{ flexShrink:0, width:148, height:88, borderRadius:8, cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", color:"white", fontWeight:700, textAlign:"center", fontSize:11, padding:8, background:g.bg, textDecoration:"none" }}>
-          <div style={{ fontSize:26, marginBottom:4 }}>{g.em}</div>
-          <div style={{ lineHeight:1.2 }}>{g.name}</div>
-        </Link>
+        <div key={i}
+          style={{ flexShrink: 0, width: 148, height: 88, borderRadius: 8, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, textAlign: "center", fontSize: 11, padding: 8, background: g.bg, transition: "transform 0.15s" }}
+          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.04)")}
+          onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
+          <div style={{ fontSize: 26, marginBottom: 4 }}>{g.em}</div>
+          <div style={{ lineHeight: 1.2 }}>{g.name}</div>
+        </div>
       ))}
     </div>
-  )
+  );
 }
 
 // ---- MAIN PAGE ----
