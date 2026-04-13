@@ -65,6 +65,15 @@ function TopNav({ active, onSelect }: { active: string; onSelect: (s: string) =>
     {item}
   </Link>
 ) :
+item === "LUCKY 7" ? (
+  <Link href="/lucky7" key={item} style={{ padding:"11px 18px", fontSize:13, fontWeight:700, whiteSpace:"nowrap", flexShrink:0, border:"none", cursor:"pointer", background:"transparent", color:"white", textDecoration:"none", display:"block" }}>{item}</Link>
+) :
+item === "POKER" ? (
+  <Link href="/poker" key={item} style={{ padding:"11px 18px", fontSize:13, fontWeight:700, whiteSpace:"nowrap", flexShrink:0, border:"none", cursor:"pointer", background:"transparent", color:"white", textDecoration:"none", display:"block" }}>{item}</Link>
+) :
+item === "BACCARAT" ? (
+  <Link href="/baccarat" key={item} style={{ padding:"11px 18px", fontSize:13, fontWeight:700, whiteSpace:"nowrap", flexShrink:0, border:"none", cursor:"pointer", background:"transparent", color:"white", textDecoration:"none", display:"block" }}>{item}</Link>
+) :
      item === " CRASH" ? (
   <Link href="/crash" key={item}
     style={{ padding: "11px 18px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0, border: "none", cursor: "pointer", background: "transparent", color: "white", textDecoration: "none", display: "block" }}>
@@ -261,14 +270,14 @@ function BetSlip({ bet, onClose, onStakeChange, onPlace, placing }: { bet: BetSl
 const casinoGames = [
   { name:"MATKA", bg:"#7c2d12", em:"🎲", href:"/matka" },
   { name:"VIP TEENPATTI 1DAY", bg:"#1e3a8a", em:"♠", href:"/teenpatti" },
-  { name:"MOGAMBO", bg:"#7f1d1d", em:"👊", href:"/teenpatti" },
+  { name:"MOGAMBO", bg:"#7f1d1d", em:"👊", href:"/poker" },
   { name:"20-20 TEEN PATTI", bg:"#14532d", em:"♣", href:"/teenpatti" },
   { name:"LUCKY 6", bg:"#7c2d00", em:"🍀", href:"/lucky6" },
-  { name:"LIVE CASINO", bg:"#500724", em:"🎰", href:"/roulette" },
+  { name:"LIVE CASINO", bg:"#500724", em:"🎰", href:"/baccarat" },
   { name:"GOLDEN ROULETTE", bg:"#713f12", em:"⭕", href:"/roulette" },
   { name:"POISON TEENPATTI", bg:"#1a2e05", em:"☠", href:"/teenpatti" },
-  { name:"SLOT GAMES", bg:"#0c4a6e", em:"🎮", href:"/matka" },
-  { name:"BACCARAT LIVE", bg:"#312e81", em:"🃏", href:"/teenpatti" },
+  { name:"SLOT GAMES", bg:"#0c4a6e", em:"🎮", href:"/lucky7" },
+  { name:"BACCARAT LIVE", bg:"#312e81", em:"🃏", href:"/baccarat" },
 ]
 
 function CasinoBanner() {
