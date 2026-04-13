@@ -437,9 +437,30 @@ export default function HomePage() {
           {betMsg}
         </div>
       )}
+      {/* Added Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 }
 
+// --- SUB-COMPONENTS ---
 
+function BottomNav() {
+  return (
+    <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-around', padding: '8px 0', zIndex: 1000, height: '60px', boxShadow: '0 -2px 10px rgba(0,0,0,0.05)' }}>
+      {[
+        { icon: '🏠', label: 'Home', href: '/home' },
+        { icon: '▶️', label: 'In-Play', href: '/home' },
+        { icon: '📋', label: 'My Bets', href: '/home' },
+        { icon: '🎰', label: 'Casino', href: '/roulette' },
+        { icon: '👛', label: 'Wallet', href: '/home' },
+      ].map((item, i) => (
+        <a key={i} href={item.href} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none', color: '#6b7280', fontSize: 11, gap: 2 }}>
+          <span style={{ fontSize: 20 }}>{item.icon}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
 
