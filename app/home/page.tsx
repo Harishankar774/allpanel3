@@ -107,40 +107,62 @@ const sidebarData = [
 
 function Sidebar({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const gameRoutes: Record<string, string> = {
-    'Teen Patti': '/teenpatti',
-    'Matka': '/matka',
-    'Lucky 6': '/lucky6',
-    'Lucky 7': '/lucky7',
-    'Poker': '/poker',
-    'Baccarat': '/baccarat',
-    'Roulette': '/roulette',
-    'Crash': '/crash',
+    'Teen Patti': '/teenpatti', 'Matka': '/matka', 'Lucky 6': '/lucky6',
+    'Lucky 7': '/lucky7', 'Poker': '/poker', 'Baccarat': '/baccarat',
+    'Roulette': '/roulette', 'Crash': '/crash',
   }
   return (
-    <aside style={{ width: 220, background: "#fff", borderRight: "1px solid #e5e7eb", overflowY: "auto", flexShrink: 0 }}>
-      {sidebarData.map(sec => (
-        <div key={sec.title}>
-          <div onClick={() => setCollapsed(p => ({ ...p, [sec.title]: !p[sec.title] }))}
-            style={{ background: "#1565c0", color: "white", padding: "9px 12px", fontSize: 13, fontWeight: 700, display: "flex", justifyContent: "space-between", cursor: "pointer", userSelect: "none" }}>
-            {sec.title} <span style={{ fontSize: 10 }}>{collapsed[sec.title] ? "▼" : "▲"}</span>
-          </div>
-          {!collapsed[sec.title] && sec.items.map(item => (
-            <div key={item} onClick={() => {
-              if (gameRoutes[item]) window.location.href = gameRoutes[item]
-              else onSelect(item)
-            }}
-              style={{ padding: "8px 12px", fontSize: 13, color: active === item ? "#1d4ed8" : "#374151", background: active === item ? "#dbeafe" : "transparent", borderBottom: "1px solid #f3f4f6", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontWeight: active === item ? 600 : 400 }}>
-              {(sec as any).hasPlus && <span style={{ color: "#2563eb", fontSize: 11, fontWeight: 900 }}>+</span>}
-              {item}
+    <>
+      {/* Mobile Toggle Button */}
+      <button onClick={() => setSidebarOpen(!sidebarOpen)}
+        style={{ display:'none', position:'fixed', top:60, left:8, zIndex:1000, background:'#1565c0', color:'white', border:'none', borderRadius:6, padding:'6px 10px', fontSize:18, cursor:'pointer' }}
+        className="mobile-menu-btn">
+        ☰
+      </button>
+
+      {/* Overlay */}
+      {sidebarOpen && (
+        <div onClick={() => setSidebarOpen(false)}
+          style={{ display:'none', position:'fixed', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.5)', zIndex:998 }}
+          className="mobile-overlay" />
+      )}
+
+      <aside style={{ width:220, background:"#fff", borderRight:"1px solid #e5e7eb", overflowY:"auto", flexShrink:0 }}
+        className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+        {sidebarData.map(sec => (
+          <div key={sec.title}>
+            <div onClick={() => setCollapsed(p => ({ ...p, [sec.title]: !p[sec.title] }))}
+              style={{ background:"#1565c0", color:"white", padding:"9px 12px", fontSize:13, fontWeight:700, display:"flex", justifyContent:"space-between", cursor:"pointer", userSelect:"none" }}>
+              {sec.title} <span style={{ fontSize:10 }}>{collapsed[sec.title] ? "▼" : "▲"}</span>
             </div>
-          ))}
-        </div>
-      ))}
-    </aside>
+            {!collapsed[sec.title] && sec.items.map(item => (
+              <div key={item} onClick={() => {
+                if (gameRoutes[item]) window.location.href = gameRoutes[item]
+                else onSelect(item)
+                setSidebarOpen(false)
+              }}
+                style={{ padding:"8px 12px", fontSize:13, color:active===item?"#1d4ed8":"#374151", background:active===item?"#dbeafe":"transparent", borderBottom:"1px solid #f3f4f6", cursor:"pointer", display:"flex", alignItems:"center", gap:6, fontWeight:active===item?600:400 }}>
+                {(sec as any).hasPlus && <span style={{ color:"#2563eb", fontSize:11, fontWeight:900 }}>+</span>}
+                {item}
+              </div>
+            ))}
+          </div>
+        ))}
+      </aside>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-menu-btn { display: block !important; }
+          .mobile-overlay { display: block !important; }
+          .sidebar { position: fixed !important; left: -220px !important; top: 0 !important; height: 100vh !important; z-index: 999 !important; transition: left 0.3s !important; }
+          .sidebar.sidebar-open { left: 0 !important; }
+        }
+      `}</style>
+    </>
   )
 }
-
 
 // ---- SPORT TABS ----
 const sportTabs = ["Cricket","Football","Tennis","Table Tennis","Esoccer","Horse Racing","Greyhound Racing","Basketball","Wrestling","Volleyball","Badminton","Snooker","Darts","Boxing"];
