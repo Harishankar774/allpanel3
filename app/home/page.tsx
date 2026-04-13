@@ -96,15 +96,27 @@ item === "BACCARAT" ? (
   );
 }
 
+
+
 // ---- LEFT SIDEBAR ----
 const sidebarData = [
   { title: "Racing Sports", items: ["Horse Racing", "Greyhound Racing"] },
-  { title: "Others", items: ["Our Casino","Our VIP Casino","Our Premium Casino","Our Virtual","Tembo","Live Casino","Slot Game","Fantasy Game"] },
+  { title: "Others", items: ["Our Casino","Our VIP Casino","Our Premium Casino","Our Virtual","Tembo","Live Casino","Slot Game","Fantasy Game","Teen Patti","Matka","Lucky 6","Lucky 7","Poker","Baccarat","Roulette","Crash"] },
   { title: "All Sports", items: ["Politics","Cricket","Football","Tennis","Table Tennis","Badminton","Esoccer","Basketball","Volleyball"], hasPlus: true },
-];
+]
 
 function Sidebar({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const gameRoutes: Record<string, string> = {
+    'Teen Patti': '/teenpatti',
+    'Matka': '/matka',
+    'Lucky 6': '/lucky6',
+    'Lucky 7': '/lucky7',
+    'Poker': '/poker',
+    'Baccarat': '/baccarat',
+    'Roulette': '/roulette',
+    'Crash': '/crash',
+  }
   return (
     <aside style={{ width: 220, background: "#fff", borderRight: "1px solid #e5e7eb", overflowY: "auto", flexShrink: 0 }}>
       {sidebarData.map(sec => (
@@ -114,7 +126,10 @@ function Sidebar({ active, onSelect }: { active: string; onSelect: (s: string) =
             {sec.title} <span style={{ fontSize: 10 }}>{collapsed[sec.title] ? "▼" : "▲"}</span>
           </div>
           {!collapsed[sec.title] && sec.items.map(item => (
-            <div key={item} onClick={() => onSelect(item)}
+            <div key={item} onClick={() => {
+              if (gameRoutes[item]) window.location.href = gameRoutes[item]
+              else onSelect(item)
+            }}
               style={{ padding: "8px 12px", fontSize: 13, color: active === item ? "#1d4ed8" : "#374151", background: active === item ? "#dbeafe" : "transparent", borderBottom: "1px solid #f3f4f6", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontWeight: active === item ? 600 : 400 }}>
               {(sec as any).hasPlus && <span style={{ color: "#2563eb", fontSize: 11, fontWeight: 900 }}>+</span>}
               {item}
@@ -123,8 +138,9 @@ function Sidebar({ active, onSelect }: { active: string; onSelect: (s: string) =
         </div>
       ))}
     </aside>
-  );
+  )
 }
+
 
 // ---- SPORT TABS ----
 const sportTabs = ["Cricket","Football","Tennis","Table Tennis","Esoccer","Horse Racing","Greyhound Racing","Basketball","Wrestling","Volleyball","Badminton","Snooker","Darts","Boxing"];
