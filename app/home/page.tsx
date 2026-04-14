@@ -183,19 +183,28 @@ function Sidebar({ active, onSelect }: { active: string; onSelect: (s: string) =
 }
 
 // ---- SPORT TABS ----
-const sportTabs = ["Cricket","Football","Tennis","Table Tennis","Esoccer","Horse Racing","Greyhound Racing","Basketball","Wrestling","Volleyball","Badminton","Snooker","Darts","Boxing"];
+const sportTabs = [
+  { name:"All", icon:"⊞" },
+  { name:"Cricket", icon:"🏏" },
+  { name:"Football", icon:"⚽" },
+  { name:"Tennis", icon:"🎾" },
+  { name:"Table Tennis", icon:"🏓" },
+  { name:"Live Casino", icon:"🎰" },
+  { name:"Others", icon:"•••" },
+]
 
 function SportTabs({ active, onSelect }: { active: string; onSelect: (s: string) => void }) {
   return (
-    <div style={{ display: "flex", overflowX: "auto", borderBottom: "2px solid #e5e7eb", background: "#fff", flexShrink: 0 }}>
+    <div style={{ display:"flex", overflowX:"auto", background:"#1a237e", flexShrink:0, padding:"0 4px" }}>
       {sportTabs.map(tab => (
-        <button key={tab} onClick={() => onSelect(tab)}
-          style={{ padding: "10px 16px", fontSize: 13, whiteSpace: "nowrap", border: "none", background: "white", cursor: "pointer", borderBottom: active === tab ? "2px solid #1d4ed8" : "2px solid transparent", color: active === tab ? "#1d4ed8" : "#6b7280", fontWeight: active === tab ? 700 : 400, transition: "all 0.15s", marginBottom: -2 }}>
-          {tab}
+        <button key={tab.name} onClick={() => onSelect(tab.name)}
+          style={{ padding:"10px 14px", fontSize:11, whiteSpace:"nowrap", border:"none", background:"transparent", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:4, color: active===tab.name ? "white" : "rgba(255,255,255,0.6)", borderBottom: active===tab.name ? "2px solid #ffd700" : "2px solid transparent", fontWeight: active===tab.name ? 700 : 400, minWidth:60 }}>
+          <span style={{ fontSize:20 }}>{tab.icon}</span>
+          <span>{tab.name}</span>
         </button>
       ))}
     </div>
-  );
+  )
 }
 
 // ---- MATCH TABLE ----
