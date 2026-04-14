@@ -18,37 +18,55 @@ interface BetSlipItem { matchId: string; matchName: string; team: string; odds: 
 
 // ---- HEADER ----
 function Header({ balance, exposure, onLoginClick }: { balance: number; exposure: number; onLoginClick: () => void }) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   return (
-    <header style={{ background: "#1a237e", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 16px", flexShrink: 0 }}>
-      <div style={{ fontSize: 52, fontWeight: 900, color: "white", letterSpacing: -3, lineHeight: 1 }}>ALL</div>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, color: "white", fontSize: 13 }}>
-        <button style={{ background: "none", border: "none", color: "white", fontSize: 18, cursor: "pointer" }}>🔍</button>
-        <span style={{ cursor: "pointer", textDecoration: "underline" }}>Rules</span>
-        <span style={{ cursor: "pointer" }}>Download Apk <span style={{ color: "#ffd700" }}>♦</span></span>
-        {session ? (
-          <>
-            <div style={{ textAlign: "right", lineHeight: 1.4, fontSize: 12 }}>
-              <div>Balance:<strong style={{ color: "#ffd700" }}> ₹{balance.toFixed(0)}</strong></div>
-              <div>Exp:<strong style={{ color: "#f87171" }}> ₹{exposure.toFixed(0)}</strong></div>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 12, color: "#93c5fd" }}>{session.user?.name}</span>
-              <button onClick={() => signOut({ callbackUrl: "/login" })}
-                style={{ background: "#dc2626", color: "white", border: "none", borderRadius: 4, padding: "5px 12px", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>
-                Logout
-              </button>
-            </div>
-          </>
-        ) : (
-          <div style={{ display: "flex", gap: 8 }}>
-            <Link href="/login" style={{ background: "transparent", color: "white", border: "1px solid white", borderRadius: 4, padding: "5px 14px", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>Login</Link>
-            <Link href="/register" style={{ background: "#ffd700", color: "#1a237e", border: "none", borderRadius: 4, padding: "5px 14px", textDecoration: "none", fontSize: 13, fontWeight: 700 }}>Register</Link>
+    <div>
+      {/* Top Bar */}
+      <header style={{ background:"#1a237e", padding:"8px 12px", flexShrink:0 }}>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ fontSize:32, fontWeight:900, color:"white", letterSpacing:-2 }}>ALL</span>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            {session ? (
+              <>
+                <div style={{ textAlign:"right" }}>
+                  <div style={{ color:"#ffd700", fontWeight:700, fontSize:14 }}>₹{balance.toFixed(0)}</div>
+                  <div style={{ color:"#93c5fd", fontSize:11 }}>Exp: ₹{exposure.toFixed(0)}</div>
+                </div>
+                <button style={{ background:"#ffd700", color:"#1a237e", border:"none", borderRadius:8, padding:"6px 14px", fontWeight:700, fontSize:13, cursor:"pointer" }}>
+                  + Deposit
+                </button>
+                <button onClick={() => signOut({ callbackUrl:"/login" })}
+                  style={{ background:"#dc2626", color:"white", border:"none", borderRadius:6, padding:"6px 12px", cursor:"pointer", fontSize:12, fontWeight:700 }}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <div style={{ display:"flex", gap:8 }}>
+                <Link href="/login" style={{ background:"transparent", color:"white", border:"1px solid white", borderRadius:6, padding:"6px 14px", textDecoration:"none", fontSize:13, fontWeight:600 }}>Login</Link>
+                <Link href="/register" style={{ background:"#ffd700", color:"#1a237e", border:"none", borderRadius:6, padding:"6px 14px", textDecoration:"none", fontSize:13, fontWeight:700 }}>Register</Link>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* Search Bar */}
+        <div style={{ background:"rgba(255,255,255,0.15)", borderRadius:24, padding:"8px 16px", display:"flex", alignItems:"center", gap:8 }}>
+          <span style={{ color:"white", fontSize:16 }}>🔍</span>
+          <input placeholder="Search for matches..."
+            style={{ background:"transparent", border:"none", outline:"none", color:"white", fontSize:13, width:"100%", }}
+          />
+        </div>
+        {/* Exposure Bar */}
+        {session && (
+          <div style={{ display:"flex", justifyContent:"space-between", marginTop:8, fontSize:11, color:"#93c5fd" }}>
+            <span>ℹ️ Exp: ₹{exposure.toFixed(0)}</span>
+            <span style={{ color:"white", cursor:"pointer" }}>❓ Help Center</span>
           </div>
         )}
-      </div>
-    </header>
-  );
+      </header>
+    </div>
+  )
 }
 
 // ---- TOP NAV ----
