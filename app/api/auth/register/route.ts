@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { registerSchema } from "@/lib/validation";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, phone, password, referralCode } = await req.json();
-
-    if (!name || !email || !phone || !password)
+    const parsed = registerSchema.safeParse(await req.json());
+    if (!parsed.success)
       return NextResponse.json({ success: false, message: "All fields required" }, { status: 400 });
+    const { name, email, phone, password, referralCode } = parsed.data;
 
     const existing = await prisma.user.findFirst({
       where: { OR: [{ email }, { phone }] },

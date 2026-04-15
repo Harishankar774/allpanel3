@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const sport = searchParams.get("sport") || "Cricket";
 
   const matches = await prisma.match.findMany({
-    where: { sport },
+    where: sport === "All" ? undefined : { sport },
     orderBy: [{ isLive: "desc" }, { startTime: "asc" }],
   });
 

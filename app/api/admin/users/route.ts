@@ -1,7 +1,11 @@
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/require-admin'
 
 export async function GET() {
+  const admin = await requireAdmin()
+  if (!admin.ok) return admin.response
+
   const users = await prisma.user.findMany({
     select: {
       id: true,

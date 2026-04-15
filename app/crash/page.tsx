@@ -12,19 +12,39 @@ export default function CrashGame() {
   const [msg, setMsg] = useState('')
   const [history, setHistory] = useState<number[]>([])
   const intervalRef = useRef<any>(null)
+  const eventSourceRef = useRef<EventSource | null>(null)
 
   useEffect(() => {
-    intervalRef.current = setInterval(fetchGame, 200)
-    return () => clearInterval(intervalRef.current)
+    // Primary realtime path: SSE stream
+    const es = new EventSource('/api/crash/stream')
+    eventSourceRef.current = es
+    es.onmessage = (event) => {
+      const data = JSON.parse(event.data)
+      setMultiplier(data.multiplier)
+      setStatus(data.status)
+      if (Array.isArray(data.history)) setHistory(data.history)
+      if (data.status === 'crashed') {
+        setBetPlaced(false)
+        setCashedOut(false)
+      }
+    }
+    es.onerror = () => {
+      // Fallback polling if stream disconnects
+      if (!intervalRef.current) intervalRef.current = setInterval(fetchGame, 400)
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      es.close()
+    }
   }, [])
 
   const fetchGame = async () => {
     const res = await fetch('/api/crash')
     const data = await res.json()
-    setMultiplier(data.multiplier)
-    setStatus(data.status)
+    setMultiplier(data.multiplier || 1)
+    setStatus(data.status || 'waiting')
+    if (Array.isArray(data.history)) setHistory(data.history)
     if (data.status === 'crashed') {
-      setHistory(h => [data.multiplier, ...h].slice(0, 10))
       setBetPlaced(false)
       setCashedOut(false)
     }
@@ -53,11 +73,13 @@ export default function CrashGame() {
   }
 
   const startGame = async () => {
-    await fetch('/api/crash', {
+    const res = await fetch('/api/crash', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'start' })
     })
+    const data = await res.json()
+    if (data.error) setMsg(data.error)
   }
 
   const multiplierColor = status === 'crashed' ? '#ef4444' : multiplier >= 2 ? '#22c55e' : '#fbbf24'

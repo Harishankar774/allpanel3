@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
+import { z } from "zod";
+
+const walletRequestSchema = z.object({
+  type: z.enum(["DEPOSIT", "WITHDRAWAL"]),
+  amount: z.number().positive().finite(),
+  method: z.string().trim().min(2).max(30).optional(),
+});
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -26,7 +33,10 @@ export async function POST(req: NextRequest) {
   if (!session?.user?.email)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { type, amount, method } = await req.json();
+  const parsed = walletRequestSchema.safeParse(await req.json());
+  if (!parsed.success)
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  const { type, amount, method } = parsed.data;
   const user = await prisma.user.findUnique({ where: { email: session.user.email } });
   if (!user) return NextResponse.json({ error: "Not found" }, { status: 404 });
 

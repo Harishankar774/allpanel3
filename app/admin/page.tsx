@@ -6,12 +6,14 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({ users: 0, bets: 0, balance: 0 })
 
   useEffect(() => {
-    fetch('/api/admin/users').then(r => r.json()).then(users => {
-      const totalBalance = users.reduce((a: number, u: any) => a + u.balance, 0)
+    fetch('/api/admin/users').then(r => r.json()).then((users: unknown) => {
+      if (!Array.isArray(users)) return
+      const totalBalance = users.reduce((a: number, u: { balance?: number }) => a + (u.balance || 0), 0)
       setStats(s => ({ ...s, users: users.length, balance: totalBalance }))
     })
-    fetch('/api/admin/bets').then(r => r.json()).then(bets => {
-      setStats(s => ({ ...s, bets: bets.length }))
+    fetch('/api/admin/bets').then(r => r.json()).then((data: { bets?: unknown[]; weatherBets?: unknown[] }) => {
+      const n = (data.bets?.length ?? 0) + (data.weatherBets?.length ?? 0)
+      setStats(s => ({ ...s, bets: n }))
     })
   }, [])
 
@@ -32,10 +34,12 @@ export default function AdminDashboard() {
           <p className="text-4xl font-bold text-yellow-400">₹{stats.balance}</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <Link href="/admin/users" className="bg-blue-600 hover:bg-blue-700 rounded-xl p-6 text-center text-xl font-bold">👥 Users</Link>
         <Link href="/admin/bets" className="bg-green-600 hover:bg-green-700 rounded-xl p-6 text-center text-xl font-bold">🎲 Bets</Link>
         <Link href="/admin/balance" className="bg-yellow-600 hover:bg-yellow-700 rounded-xl p-6 text-center text-xl font-bold">💰 Balance</Link>
+        <Link href="/admin/settle" className="bg-purple-600 hover:bg-purple-700 rounded-xl p-6 text-center text-xl font-bold">⚖️ Settle</Link>
+        <Link href="/admin/audit" className="bg-slate-600 hover:bg-slate-700 rounded-xl p-6 text-center text-xl font-bold">🛡️ Audit</Link>
       </div>
     </div>
   )
