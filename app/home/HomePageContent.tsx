@@ -798,7 +798,7 @@ const casinoGames = [
   { name: "ROULETTE", bg: "#713f12", em: "⭕", href: "/roulette" },
 ];
 
-function CasinoBanner() {
+function CasinoBanner({ games }: { games: typeof casinoGames }) {
   return (
     <div
       style={{
@@ -810,7 +810,7 @@ function CasinoBanner() {
         borderTop: `1px solid ${C.border}`,
       }}
     >
-      {casinoGames.map((g, i) => (
+      {games.map((g, i) => (
         <Link
           key={i}
           href={g.href}
@@ -907,7 +907,7 @@ export default function HomePageContent() {
   const [betSlip, setBetSlip] = useState<BetSlipItem | null>(null);
   const [placing, setPlacing] = useState(false);
   const [betMsg, setBetMsg] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Search text ke liye
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchMatches = useCallback(async (sport: string) => {
@@ -966,7 +966,7 @@ export default function HomePageContent() {
   }, [fetchBalance]);
 
   useEffect(() => {
-    const q = searchQuery.trim();
+    const q = searchTerm.trim();
     if (q.length < 2) {
       setSearchPool([]);
       return;
@@ -978,10 +978,10 @@ export default function HomePageContent() {
         .catch(() => setSearchPool([]));
     }, 300);
     return () => window.clearTimeout(t);
-  }, [searchQuery]);
+  }, [searchTerm]);
 
   const filteredMatches = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = searchTerm.trim().toLowerCase();
     const base = q.length >= 2 ? searchPool : matches;
     if (!q) return base;
     return base.filter(
@@ -991,7 +991,13 @@ export default function HomePageContent() {
         m.teamB.toLowerCase().includes(q) ||
         m.sport.toLowerCase().includes(q)
     );
-  }, [matches, searchQuery, searchPool]);
+  }, [matches, searchTerm, searchPool]);
+
+  const filteredCasino = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
+    if (!q) return casinoGames;
+    return casinoGames.filter((g) => g.name.toLowerCase().includes(q));
+  }, [searchTerm]);
 
   const handlePlaceBet = async () => {
     if (!session) {
@@ -1049,20 +1055,23 @@ export default function HomePageContent() {
         >
           <span style={{ color: C.muted }}>🔍</span>
           <input
-            placeholder="Search for matches..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            type="text"
+            placeholder="Search for matches or games..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              background: "transparent",
-              border: "none",
-              outline: "none",
-              color: C.text,
-              fontSize: 14,
               width: "100%",
+              padding: "10px 40px",
+              background: "#1e293b",
+              border: "1px solid #334155",
+              borderRadius: "8px",
+              color: "white",
+              outline: "none",
+              fontSize: 14,
             }}
           />
         </div>
-        {searchQuery.trim().length >= 2 && (
+        {searchTerm.trim().length >= 2 && (
           <div style={{ fontSize: 11, color: C.muted, marginTop: 6 }}>Searching across all sports…</div>
         )}
         {session && (
@@ -1120,7 +1129,7 @@ export default function HomePageContent() {
           ) : (
             <MatchList matches={filteredMatches} onSelectBet={setBetSlip} exposure={exposure} />
           )}
-          <CasinoBanner />
+          <CasinoBanner games={filteredCasino} />
         </div>
       </div>
 
